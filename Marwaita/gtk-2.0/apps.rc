@@ -1,0 +1,162 @@
+# vim:set ft=gtkrc ts=2 sw=2 sts=2 ai et:
+#
+# This file, unlike hacks.rc, contains legitimate cases we need to handle, e.g.
+# custom widgets, programs giving us a chance to alter their UI to fit more with
+# the theme or stuff that is supposed to look different, like panels.
+
+# TODO: This could really look nicer
+style "gimp_spin_scale" {
+  # Spin background
+  bg[NORMAL] = @base_color
+
+  engine "pixmap" {
+    image {
+      function        = BOX
+      state           = NORMAL
+      detail          = "spinbutton_up"
+      overlay_file    = "assets/pan-up-alt.png"
+      overlay_stretch = FALSE
+    }
+
+    image {
+      function        = BOX
+      state           = PRELIGHT
+      detail          = "spinbutton_up"
+      overlay_file    = "assets/pan-up.png"
+      overlay_stretch = FALSE
+    }
+
+    image {
+      function        = BOX
+      state           = ACTIVE
+      detail          = "spinbutton_up"
+      overlay_file    = "assets/pan-up.png"
+      overlay_stretch = FALSE
+    }
+
+    image {
+      function        = BOX
+      state           = INSENSITIVE
+      detail          = "spinbutton_up"
+      overlay_file    = "assets/pan-up-alt-disabled.png"
+      overlay_stretch = FALSE
+    }
+
+    image {
+      function        = BOX
+      state           = NORMAL
+      detail          = "spinbutton_down"
+      overlay_file    = "assets/pan-down-alt.png"
+      overlay_stretch = FALSE
+    }
+
+    image {
+      function        = BOX
+      state           = PRELIGHT
+      detail          = "spinbutton_down"
+      overlay_file    = "assets/pan-down.png"
+      overlay_stretch = FALSE
+    }
+
+    image {
+      function        = BOX
+      state           = ACTIVE
+      detail          = "spinbutton_down"
+      overlay_file    = "assets/pan-down.png"
+      overlay_stretch = FALSE
+    }
+
+    image {
+      function        = BOX
+      state           = INSENSITIVE
+      detail          = "spinbutton_down"
+      overlay_file    = "assets/pan-down-alt-disabled.png"
+      overlay_stretch = FALSE
+    }
+  }
+}
+
+style "chrome_gtk_frame" {
+  ChromeGtkFrame::frame-color                    = @titlebar_bg_color
+  ChromeGtkFrame::inactive-frame-color           = @titlebar_bg_color
+  ChromeGtkFrame::incognito-frame-color          = @titlebar_bg_color
+  ChromeGtkFrame::incognito-inactive-frame-color = @titlebar_bg_color
+
+  ChromeGtkFrame::frame-gradient-size = 0
+}
+
+# Disable spin button assets for GimpSpinScale
+class "GimpSpinScale" style "gimp_spin_scale"
+
+# Chromium lets us define some colours and settings for better integration
+class "ChromeGtkFrame" style "chrome_gtk_frame"
+
+style "murrine-panel"
+ {
+	xthickness = 1
+	ythickness = 1
+
+	bg[NORMAL] = @tooltip_bg_color
+	bg[PRELIGHT] = shade (0.1, @tooltip_fg_color)
+	bg[SELECTED] = shade (0.1, @tooltip_fg_color)
+	bg[ACTIVE] = shade (0.2, @tooltip_fg_color)
+	bg[INSENSITIVE] = @tooltip_bg_color
+
+	fg[NORMAL] = @tooltip_fg_color
+	fg[PRELIGHT] = @tooltip_fg_color
+	fg[SELECTED] = @tooltip_fg_color
+	fg[ACTIVE] = @tooltip_fg_color
+	fg[INSENSITIVE] =mix(0.5, @tooltip_bg_color, @tooltip_fg_color)
+
+	base[NORMAL] = @tooltip_bg_color
+	base[PRELIGHT] = @tooltip_fg_color
+	base[SELECTED] = @tooltip_fg_color
+	base[ACTIVE] = @tooltip_fg_color
+	base[INSENSITIVE] = @tooltip_bg_color
+
+	text[NORMAL] = @tooltip_fg_color
+	text[PRELIGHT] = @tooltip_fg_color
+	text[SELECTED] = @tooltip_fg_color
+	text[ACTIVE] = @tooltip_fg_color
+	text[INSENSITIVE] =mix(0.5, @tooltip_bg_color, @tooltip_fg_color)
+	
+	engine "murrine" {
+		roundness			= 0
+		reliefstyle			= 0
+		border_shades 			= { 1.0, 1.0 } 
+    		lightborder_shade		= 0.0
+		lightborderstyle		= 0
+		contrast			= 0.0
+	}
+}
+
+widget "*PanelWidget*" style "murrine-panel"
+widget "*PanelApplet*" style "murrine-panel"
+widget "*fast-user-switch*" style "murrine-panel"
+widget "*CPUFreq*Applet*" style "murrine-panel"
+widget "*indicator-applet*" style "murrine-panel"
+class "PanelApp*" style "murrine-panel"
+class "PanelToplevel*" style "murrine-panel"
+widget_class "*PanelToplevel*" style "murrine-panel"
+widget_class "*notif*" style "murrine-panel"
+widget_class "*Notif*" style "murrine-panel"
+widget_class "*Tray*" style "murrine-panel" 
+widget_class "*tray*" style "murrine-panel"
+widget_class "*computertemp*" style "murrine-panel"
+widget_class "*Applet*Tomboy*" style "murrine-panel"
+widget_class "*Applet*Netstatus*" style "murrine-panel"
+widget "*gdm-user-switch-menubar*" style "murrine-panel"
+
+
+widget "*Xfce*Panel*" style "murrine-panel"
+class "*Xfce*Panel*" style "murrine-panel"
+
+# Theme panel elements
+widget "*PanelWidget*" 					style "murrine-panel"
+widget "*PanelApplet*" 					style "murrine-panel"
+widget "*fast-user-switch*"				style "murrine-panel" # workaround for Fast User Switch applet
+class "PanelApp*" 					style "murrine-panel"
+class "PanelToplevel*" 					style "murrine-panel"
+widget_class "*Mail*" 					style "murrine-panel"
+widget_class "*notif*" 					style "murrine-panel"
+widget_class "*Notif*" 					style "murrine-panel"

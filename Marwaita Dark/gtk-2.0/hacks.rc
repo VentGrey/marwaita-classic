@@ -1,0 +1,76 @@
+# vim:set ft=gtkrc ts=2 sw=2 sts=2 ai et:
+#
+# This file contains horrible hacks to make this theme work with some programs
+# This is mostly due to the limitations of GTK 2 but sometimes its the fault of
+# the programs themselves. Not going to point fingers.
+#
+# Either way, it's a WONTFIX for both, hence this horrible file.
+
+style "toplevel_hack" {
+  engine "adwaita" {}
+}
+
+style "chrome_entry" {
+  base[NORMAL]      = @base_color
+  base[INSENSITIVE] = @base_color
+}
+
+style "vim_notebook" {
+  bg[NORMAL] = @base_color
+  bg[ACTIVE] = @bg_color
+}
+
+# Vim puts an eventbox between the tab and the label and colours it,
+# we need to handle that
+widget "vim-main-window*GtkNotebook.GtkEventBox" style "vim_notebook"
+
+# (he)xchat input box
+class "SexySpellEntry" style:highest "normal_entry"
+
+# Chromium uses base as the fill colour of its own entries
+# This would be fine but GTK uses it to fill the surrounding space, so its set to bg
+# That results in Chromium using it for the fill, so we need to handle that
+widget_class "*Chrom*<GtkEntry>" style "chrome_entry"
+
+# Hack to be able to match widgets in LibreOffice
+class "GtkWindow" style "toplevel_hack"
+
+style "murrine-combobox-text-color-workaround"
+{
+	text[NORMAL]      = @fg_color
+	text[PRELIGHT]    = @fg_color
+	text[ACTIVE]      = @fg_color
+	text[SELECTED]    = @fg_color
+	text[INSENSITIVE] = shade (0.5, @bg_color)
+}
+widget_class "*.<GtkComboBox>.<GtkCellView>"		style "murrine-combobox-text-color-workaround"
+
+style "murrine-menuitem-text-is-fg-color-workaround"
+{
+	text[NORMAL]        = @fg_color
+	text[PRELIGHT]      = @selected_fg_color
+	text[ACTIVE]        = @fg_color
+	text[SELECTED]      = @fg_color
+	text[INSENSITIVE]   = shade (0.5, @bg_color)
+}
+
+widget "*.gtk-combobox-popup-menu.*"   			style "murrine-menuitem-text-is-fg-color-workaround"
+
+# Work around the usage of GtkLabel inside GtkListItems to display text.
+# This breaks because the label is shown on a background that is based on the
+# base color set.
+style "murrine-fg-is-text-color-workaround"
+{
+	bg[SELECTED]    = @selected_bg_color
+	fg[NORMAL]      = @text_color
+	fg[PRELIGHT]    = @text_color
+	fg[ACTIVE]      = @selected_fg_color
+	fg[SELECTED]    = @selected_fg_color
+	fg[INSENSITIVE] = shade (0.5, @bg_color)
+}
+
+widget_class "*<GtkListItem>*" 				style "murrine-fg-is-text-color-workaround"
+
+# The same problem also exists for GtkCList and GtkCTree
+# Only match GtkCList and not the parent widgets, because that would also change the headers.
+widget_class "*<GtkCList>" 				style "murrine-fg-is-text-color-workaround"
